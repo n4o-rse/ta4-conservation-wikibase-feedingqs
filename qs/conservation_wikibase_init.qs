@@ -8,8 +8,6 @@ LAST	Dde	"Material aus dem das Objekt besteht."
 LAST	P24	de:"Material aus dem das Objekt besteht."
 LAST	P20	Q7
 LAST	P20	Q8
-LAST	P17	"http://vocab.getty.edu/page/aat/300235507"	P18	P13	P19	Q11
-LAST	P17	"http://www.wikidata.org/entity/Q45621"	P18	P13	P19	Q9
 
 CREATE
 LAST	P4	"A18D95"
