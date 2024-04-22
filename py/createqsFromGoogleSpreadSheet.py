@@ -56,25 +56,24 @@ print(data.info())
 lineNo = 2
 tmp = ""
 for index, row in data.iterrows():
-    # tmpno = lineNo - 2
-    # lineNo += 1
-    qs.append("CREATE")
-    tmp = "LAST" + "\t" + "Lde" + "\t" + "\"" + str(row['prefLabel']) + "\""
-    qs.append(tmp)
-    if str(row['description']) != 'nan':
-        tmp = "LAST" + "\t" + "Dde" + "\t" + "\"" + str(row['description']) + "\""
-    qs.append(tmp)
-    tmp = "LAST" + "\t" + "Len" + "\t" + "\"" + str(row['prefLabel']) + "\""
-    qs.append(tmp)
-    if str(row['description']) != 'nan':
-        tmp = "LAST" + "\t" + "Den" + "\t" + "\"" + str(row['description']) + "\""
-    qs.append(tmp)
-    tmp = "LAST" + "\t" + "P2" + "\t" + "Q2"
-    qs.append(tmp)
-    tmp = "LAST" + "\t" + "P4" + "\t" + "\"" + str(row['identifier']) + "\""
-    qs.append(tmp)
+    if str(row['prefLabel']) != 'nan':
+        qs.append("CREATE")
+        tmp = "LAST" + "\t" + "Lde" + "\t" + "\"" + str(row['prefLabel']) + "\""
+        qs.append(tmp)
+        if str(row['description']) != 'nan':
+            tmp = "LAST" + "\t" + "Dde" + "\t" + "\"" + str(row['description']) + "\""
+        qs.append(tmp)
+        tmp = "LAST" + "\t" + "Len" + "\t" + "\"" + str(row['prefLabel']) + "\""
+        qs.append(tmp)
+        if str(row['description']) != 'nan':
+            tmp = "LAST" + "\t" + "Den" + "\t" + "\"" + str(row['description']) + "\""
+        qs.append(tmp)
+        tmp = "LAST" + "\t" + "P2" + "\t" + "Q2"
+        qs.append(tmp)
+        tmp = "LAST" + "\t" + "P4" + "\t" + "\"" + str(row['identifier']) + "\""
+        qs.append(tmp)
 
-    qs.append("")
+        qs.append("")
 
 # write output file
 filename = dir_path.replace("\\py", "\\qs") + "\\" + "conservation_wikibase_init.qs"
