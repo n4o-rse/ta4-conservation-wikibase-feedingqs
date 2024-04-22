@@ -46,7 +46,7 @@ url = "https://docs.google.com/spreadsheets/d/1HKatD3XhOvcnF_c5t1pP9C9i_YuS6LPrH
 data = pd.read_csv(
     url,
     encoding='utf-8',
-    usecols=['identifier', 'prefLabel', 'description', 'type'],
+    usecols=['identifier', 'type', 'prefLabel', 'altLabel', 'translation', 'description', 'source', 'creator', 'closeMatch'],
     na_values=['.', '??', 'NULL']  # take any '.' or '??' values as NA
 )
 print("*****************************************")
@@ -58,21 +58,68 @@ tmp = ""
 for index, row in data.iterrows():
     if str(row['prefLabel']) != 'nan':
         qs.append("CREATE")
-        tmp = "LAST" + "\t" + "Lde" + "\t" + "\"" + str(row['prefLabel']) + "\""
-        qs.append(tmp)
-        if str(row['description']) != 'nan':
-            tmp = "LAST" + "\t" + "Dde" + "\t" + "\"" + str(row['description']) + "\""
-        qs.append(tmp)
-        tmp = "LAST" + "\t" + "Len" + "\t" + "\"" + str(row['prefLabel']) + "\""
-        qs.append(tmp)
-        if str(row['description']) != 'nan':
-            tmp = "LAST" + "\t" + "Den" + "\t" + "\"" + str(row['description']) + "\""
-        qs.append(tmp)
-        tmp = "LAST" + "\t" + "P2" + "\t" + "Q2"
-        qs.append(tmp)
+        # identifier
         tmp = "LAST" + "\t" + "P4" + "\t" + "\"" + str(row['identifier']) + "\""
         qs.append(tmp)
-
+        # type
+        tmp = "LAST" + "\t" + "P2" + "\t" + str(row['type'])
+        qs.append(tmp)
+        # prefLabel
+        tmp = "LAST" + "\t" + "Lde" + "\t" + "\"" + str(row['prefLabel']) + "\""
+        qs.append(tmp)
+        tmp = "LAST" + "\t" + "P21" + "\t" + "de:\"" + str(row['prefLabel']) + "\""
+        # altLabel
+        if str(row['altLabel']) != 'nan':
+            al = str(row['altLabel'])
+            als = al.split("|")
+            for i in als:
+                tmp = "LAST" + "\t" + "Ade" + "\t" + "\"" + i + "\""
+                qs.append(tmp)
+                tmp = "LAST" + "\t" + "P22" + "\t" + "de:\"" + i + "\""
+                qs.append(tmp)
+        # translatation
+        if str(row['translation']) != 'nan':
+            tr = str(row['translation'])
+            trs = tr.split("|")
+            for i in trs:
+                tr1 = i
+                tr1s = tr1.split("@")
+                tmp = "LAST" + "\t" + "P23" + "\t" + tr1s[1] +  ":\"" + tr1s[0] + "\""
+                qs.append(tmp)
+        # description
+        if str(row['description']) != 'nan':
+            tmp = "LAST" + "\t" + "Dde" + "\t" + "\"" + str(row['description']) + "\""
+            qs.append(tmp)
+            tmp = "LAST" + "\t" + "P24" + "\t" + "de:\"" + str(row['description']) + "\""
+            qs.append(tmp)
+        # source
+        if str(row['source']) != 'nan':
+            tmp = "LAST" + "\t" + "P25" + "\t" + "\"" + str(row['source']) + "\""
+            qs.append(tmp)
+        # creator
+        if str(row['creator']) != 'nan':
+            cr = str(row['creator'])
+            crs = cr.split("|")
+            for i in crs:
+                tmp = "LAST" + "\t" + "P20" + "\t" + i 
+                qs.append(tmp)
+        # closeMatch
+        if str(row['closeMatch']) != 'nan':
+            cm = str(row['closeMatch'])
+            cms = cm.split("|")
+            for i in cms:
+                repo = "";
+                if "getty" in i:
+                    repo = "Q11"
+                elif "wikidata" in i:
+                    repo = "Q9"
+                elif "wikipedia" in i:
+                    repo = "Q10"
+                else:
+                    repo = ""
+                tmp = "LAST" + "\t" + "P17" + "\t" + "\"" + i + "\"" + "\t" + "P18" + "\t" + "P13" + "\t" + "P19" + "\t" + repo
+                qs.append(tmp)
+        # new Item
         qs.append("")
 
 # write output file
